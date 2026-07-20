@@ -95,7 +95,7 @@ function getErrorMessage(e: any): string {
 }
 
 const app = express();
-  const PORT = process.env.PORT || 3000;
+  const PORT = Number(process.env.PORT) || 3000;
 
   // Configure JSON parser with larger limits for base64 image uploads
   app.use(express.json({ limit: "15mb" }));

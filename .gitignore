@@ -6,3 +6,8 @@ coverage/
 *.log
 .env*
 !.env.example
+public_html/
+*.mp4
+*.mov
+*.avi
+*.mkv
