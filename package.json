@@ -1,6 +1,6 @@
 {
   "name": "react-example",
-  "engines": { "node": ">=20" },
+  "engines": { "node": "22.x" },
   "private": true,
   "version": "0.0.0",
   "type": "module",
