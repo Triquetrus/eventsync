@@ -273,7 +273,7 @@ Generate 3 captions reflecting the selected tone "${tone}".`;
       promptParts.push(textPrompt);
 
       const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.5-flash-002",
         contents: promptParts,
         config: {
           responseMimeType: "application/json",
@@ -311,7 +311,7 @@ Generate 3 captions reflecting the selected tone "${tone}".`;
       const pureBase64 = audioBase64.replace(/^data:audio\/\w+(?:;codecs=[^;]+)?;base64,/, "").replace(/^data:video\/\w+(?:;codecs=[^;]+)?;base64,/, "");
       
       const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.5-flash-002",
         contents: [
           {
             inlineData: {
@@ -352,7 +352,7 @@ Return your response strictly in JSON format as an array of strings:
 ]`;
 
       const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.5-flash-002",
         contents: [textPrompt],
         config: {
           responseMimeType: "application/json",
@@ -554,7 +554,7 @@ Return your response strictly in JSON format as an array of strings:
       promptParts.push(prompt || "Analyze this media.");
 
       const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.5-flash-002",
         contents: promptParts
       });
       

@@ -83,6 +83,7 @@ import {
   setNotifications,
 } from "./lib/db";
 function App() {
+  console.log("[DEBUG] App render", Date.now());
   const [up, setUp] = React.useState(() => {
     const saved = localStorage.getItem("eventsync_user_profile");
     return saved ? JSON.parse(saved) : null;
@@ -376,7 +377,7 @@ function App() {
         return (setNotifications(ue), ue);
       });
     },
-    X = (J) => {
+    clearNotif = (J) => {
       w((ue) => {
         const he = ue.filter((we) => we.id !== J);
         return (setNotifications(he), he);
@@ -549,6 +550,7 @@ function App() {
                                     type="submit"
                                     className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all transform hover:-translate-y-0.5"
                                   >
+                                    Submit
                                     {isLoginView ? "Sign in" : "Create account"}
                                   </button>
                                 }
@@ -665,16 +667,16 @@ function App() {
       {z && (
         <div
           className="fixed inset-0 bg-black/40 z-[9940] md:hidden backdrop-blur-sm"
-          onClick={() => te(!1)}
+          onClick={() => { console.log("[DEBUG] overlay click"); te(!1); }}
         />
       )}
       {
-        <header className="md:hidden flex items-center justify-between px-6 py-4 bg-white border-b border-pink-100 shrink-0 sticky top-0 z-[9930] shadow-sm">
+        <header className="md:hidden flex items-center justify-between px-6 py-4 bg-white border-b border-pink-100 shrink-0 sticky top-0 z-[9945] shadow-sm">
           {
             <div className="flex items-center gap-3">
               {
                 <button
-                  onClick={() => te(!z)}
+                  onClick={() => { console.log("[DEBUG] hamburger click, z was", z); te(!z); }}
                   className="text-gray-600 hover:text-pink-600 p-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 cursor-pointer"
                   aria-label="Toggle navigation menu"
                 >
@@ -818,7 +820,7 @@ function App() {
           onClose={() => V(!1)}
           onMarkRead={rt}
           onMarkAllRead={pt}
-          onClearNotification={X}
+          onClearNotification={clearNotif}
           onActionTrigger={ce}
         />
       }
