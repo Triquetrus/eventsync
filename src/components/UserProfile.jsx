@@ -347,7 +347,12 @@ function UserProfile({ profile, setProfile, accounts, onToggleConnect }) {
                     <div className="pt-4">
                       {
                         <button
-                          onClick={() => {
+                          onClick={async () => {
+                            try {
+                              await window.supabaseAuth.updateProfile(name, image);
+                            } catch (err) {
+                              console.warn("Profile sync failed:", err);
+                            }
                             if (setProfile)
                               setProfile({
                                 name,

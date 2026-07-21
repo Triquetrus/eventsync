@@ -27,6 +27,8 @@ window.supabaseAuth = {
     }),
   googleLogin: () => supabase.auth.signInWithOAuth({ provider: "google" }),
   logout: () => supabase.auth.signOut(),
+  updateProfile: (name, image) =>
+    supabase.auth.updateUser({ data: { full_name: name, avatar_url: image } }),
   onAuthStateChanged: (callback) => {
     supabase.auth.getSession().then(({ data }) => {
       callback(profileFromUser(data.session?.user));

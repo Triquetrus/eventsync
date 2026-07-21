@@ -414,10 +414,10 @@ function App() {
       const unsubscribe = window.supabaseAuth.onAuthStateChanged((user) => {
         if (user) {
           saveProfile({
-            name: user.displayName || user.email.split("@")[0],
+            name: user.name || user.email.split("@")[0],
             email: user.email,
             role: "User",
-            image: user.photoURL,
+            image: user.image,
           });
         } else {
           setUp(null);

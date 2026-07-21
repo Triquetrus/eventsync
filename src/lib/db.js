@@ -148,12 +148,32 @@ export const EC = [{
     try {
       up = JSON.parse(localStorage.getItem("eventsync_user_profile"));
     } catch (e) {}
-    const e = r.id || `med-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
-      t = {
-        ...r,
-        id: e,
-        userEmail: up ? up.email : ""
-      };
+    const e = r.id || `med-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+    let t = {
+      ...r,
+      id: e,
+      userEmail: up ? up.email : "",
+    };
+    if (t.base64Data && typeof t.base64Data === "string" && t.base64Data.startsWith("data:")) {
+      try {
+        const mm = t.base64Data.match(/^data:([^;]+);base64,(.*)$/);
+        if (mm) {
+          const mime = mm[1], bin = atob(mm[2]);
+          const bytes = new Uint8Array(bin.length);
+          for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+          const ext = mime.split("/")[1] || "bin";
+          const path = `${t.userEmail || "anon"}/${e}.${ext}`;
+          const { error: upErr } = await supabase.storage.from("media").upload(path, new Blob([bytes], { type: mime }), { upsert: true, contentType: mime });
+          if (!upErr) {
+            const { data: pub } = supabase.storage.from("media").getPublicUrl(path);
+            t.base64Data = pub.publicUrl;
+            t.storagePath = path;
+          }
+        }
+      } catch (se) {
+        console.warn("Supabase storage upload error:", se);
+      }
+    }
     try {
       await supabase.from("media").upsert({ id: e, user_email: t.userEmail, event_id: t.eventId || null, data: t });
     } catch (u) {
@@ -164,6 +184,10 @@ export const EC = [{
     return a !== -1 ? s[a] = t : s.push(t), saveToStorage("media", s), t;
   },
   NC = async r => {
+    try {
+      const cur = getFromStorage("media", []).find(m => m.id === r);
+      if (cur && cur.storagePath) await supabase.storage.from("media").remove([cur.storagePath]);
+    } catch (se) {}
     try {
       await supabase.from("media").delete().eq("id", r);
     } catch (s) {
