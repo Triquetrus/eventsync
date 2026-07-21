@@ -1,5 +1,7 @@
 import { supabase } from "./supabaseClient";
 
+const MEDIA_BUCKET = import.meta.env.VITE_SUPABASE_STORAGE_BUCKET || "basket";
+
 export const Ti = false;
 export const sn = null;
 export const oa = () => {};
@@ -7,25 +9,11 @@ export const b6 = async () => {};
 export const E6 = async () => {};
 export const ya = () => {};
 
-export const EC = [{
-    platform: "instagram",
-    username: "eventsync.ai",
-    isConnected: !0,
-    profileUrl: "https://instagram.com/eventsync.ai",
-    avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-  }, {
-    platform: "linkedin",
-    username: "EventSync Corporate",
-    isConnected: !1,
-    profileUrl: "https://linkedin.com/company/eventsync",
-    avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop&q=80"
-  }, {
-    platform: "facebook",
-    username: "EventSync Pages",
-    isConnected: !0,
-    profileUrl: "https://facebook.com/eventsync.ai",
-    avatarUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80"
-  }],
+export const EC = [
+  { platform: "instagram", isConnected: !1 },
+  { platform: "linkedin", isConnected: !1 },
+  { platform: "facebook", isConnected: !1 },
+],
   defaultEvents = [{
     id: "event-1",
     name: "AI Hackathon Demo Day",
@@ -163,9 +151,18 @@ export const EC = [{
           for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
           const ext = mime.split("/")[1] || "bin";
           const path = `${t.userEmail || "anon"}/${e}.${ext}`;
-          const { error: upErr } = await supabase.storage.from("media").upload(path, new Blob([bytes], { type: mime }), { upsert: true, contentType: mime });
-          if (!upErr) {
-            const { data: pub } = supabase.storage.from("media").getPublicUrl(path);
+          const { error: upErr } = await supabase.storage
+            .from(MEDIA_BUCKET)
+            .upload(path, new Blob([bytes], { type: mime }), {
+              upsert: true,
+              contentType: mime,
+            });
+          if (upErr) throw upErr;
+
+          {
+            const { data: pub } = supabase.storage
+              .from(MEDIA_BUCKET)
+              .getPublicUrl(path);
             t.base64Data = pub.publicUrl;
             t.storagePath = path;
           }
@@ -175,7 +172,10 @@ export const EC = [{
       }
     }
     try {
-      await supabase.from("media").upsert({ id: e, user_email: t.userEmail, event_id: t.eventId || null, data: t });
+      const { error } = await supabase
+        .from("media")
+        .upsert({ id: e, user_email: t.userEmail, event_id: t.eventId || null, data: t });
+      if (error) throw error;
     } catch (u) {
       console.warn("Supabase media write error:", u);
     }
@@ -186,7 +186,12 @@ export const EC = [{
   NC = async r => {
     try {
       const cur = getFromStorage("media", []).find(m => m.id === r);
-      if (cur && cur.storagePath) await supabase.storage.from("media").remove([cur.storagePath]);
+      if (cur && cur.storagePath) {
+        const { error } = await supabase.storage
+          .from(MEDIA_BUCKET)
+          .remove([cur.storagePath]);
+        if (error) throw error;
+      }
     } catch (se) {}
     try {
       await supabase.from("media").delete().eq("id", r);

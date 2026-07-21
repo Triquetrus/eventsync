@@ -40,8 +40,7 @@ function ConnectedAccountsTab({ accounts: r, onToggleConnect: e }) {
           }
           {
             <p className="text-gray-500 text-sm mt-1">
-              Configure your target social API graphs, manage OAuth credentials,
-              and toggle safe sandbox staging.
+              Social publishing integrations are planned for a future release.
             </p>
           }
         </div>
@@ -54,7 +53,7 @@ function ConnectedAccountsTab({ accounts: r, onToggleConnect: e }) {
                 <div className="bg-white border border-pink-100 rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
                   {
                     <h3 className="font-bold text-sm text-pink-600 uppercase tracking-wider font-mono border-b border-pink-50 pb-3">
-                      API Integration Status
+                      Integration Roadmap
                     </h3>
                   }
                   {
@@ -97,18 +96,14 @@ function ConnectedAccountsTab({ accounts: r, onToggleConnect: e }) {
                                           <span
                                             className={`px-2 py-0.5 text-[9px] font-bold rounded-full ${V.isConnected ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-pink-50/50 text-pink-400 border border-pink-100/30"}`}
                                           >
-                                            {V.isConnected
-                                              ? "CONNECTED"
-                                              : "DISCONNECTED"}
+                                            COMING SOON
                                           </span>
                                         }
                                       </div>
                                     }
                                     {
                                       <p className="text-xs text-gray-500 mt-0.5">
-                                        {V.isConnected
-                                          ? `Linked Account: @${V.username} ${V.apiKey ? "| Key: " + V.apiKey.substring(0, 4) + "***" : ""}`
-                                          : "Requires API setup & OAuth handshake"}
+                                        OAuth connection and direct publishing are not yet available.
                                       </p>
                                     }
                                   </div>
@@ -119,29 +114,13 @@ function ConnectedAccountsTab({ accounts: r, onToggleConnect: e }) {
                               <div className="flex items-center gap-2 self-end sm:self-center">
                                 {
                                   <button
-                                    onClick={() => w(V.platform)}
-                                    className="bg-white hover:bg-pink-50 text-gray-700 border border-pink-100 px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer transition-colors"
+                                    disabled
+                                    className="bg-gray-100 text-gray-400 border border-gray-200 px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 cursor-not-allowed"
                                   >
-                                    API Setup
+                                    {<Clock className="w-3.5 h-3.5" />}
+                                    {<span>Coming Soon</span>}
                                   </button>
                                 }
-                                {V.isConnected ? (
-                                  <button
-                                    onClick={() => e(V.platform)}
-                                    className="bg-rose-50 hover:bg-rose-100/80 text-rose-600 border border-rose-100 px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all cursor-pointer"
-                                  >
-                                    {<Unlink className="w-3.5 h-3.5" />}
-                                    {<span>Disconnect</span>}
-                                  </button>
-                                ) : (
-                                  <button
-                                    onClick={() => w(V.platform)}
-                                    className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all shadow-md shadow-pink-500/10 cursor-pointer"
-                                  >
-                                    {<Link className="w-3.5 h-3.5" />}
-                                    {<span>Link Page</span>}
-                                  </button>
-                                )}
                               </div>
                             }
                           </div>
@@ -219,9 +198,9 @@ function ConnectedAccountsTab({ accounts: r, onToggleConnect: e }) {
                           }
                           {
                             <p className="text-[11px] text-gray-500 mt-1 leading-normal">
-                              EventSync AI links with Meta Graph and LinkedIn
-                              Client APIs. To publish, we require standard App
-                              Client Secrets available from Developer Consoles.
+                              Direct publishing via Meta Graph and LinkedIn APIs
+                              is planned after OAuth and account-security work is
+                              complete.
                             </p>
                           }
                         </div>

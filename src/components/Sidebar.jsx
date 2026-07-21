@@ -10,7 +10,6 @@ function Sidebar({
   isMobileOpen: u = !1,
   onCloseMobile: c,
 }) {
-  console.log("[DEBUG] Sidebar render, isMobileOpen=", u);
   const p = [
     {
       id: "dashboard",
@@ -43,7 +42,7 @@ function Sidebar({
       id="sidebar-container"
       className={`
         ${u ? "flex" : "hidden"} md:flex
-        fixed md:sticky inset-y-0 left-0 z-[9950] w-64 bg-white overflow-y-auto border-r border-pink-100 flex-col h-screen shrink-0 md:top-0
+        fixed md:sticky top-0 bottom-0 left-0 z-50 w-64 bg-white overflow-y-auto border-r border-pink-100 flex-col h-screen shrink-0 md:top-0
       `}
     >
       {

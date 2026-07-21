@@ -547,10 +547,9 @@ function App() {
                               <div className="pt-2">
                                 {
                                   <button
-                                    type="submit"
-                                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all transform hover:-translate-y-0.5"
+                                    type="submit" 
+                                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-black bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all transform hover:-translate-y-0.5"
                                   >
-                                    Submit
                                     {isLoginView ? "Sign in" : "Create account"}
                                   </button>
                                 }
@@ -666,8 +665,9 @@ function App() {
       }
       {z && (
         <div
-          className="fixed inset-0 bg-black/40 z-[9940] md:hidden backdrop-blur-sm"
-          onClick={() => { console.log("[DEBUG] overlay click"); te(!1); }}
+          className="fixed inset-0 z-[9940] bg-black/40 backdrop-blur-sm md:hidden"
+          onClick={() => te(false)}
+          aria-hidden="true"
         />
       )}
       {
@@ -676,9 +676,11 @@ function App() {
             <div className="flex items-center gap-3">
               {
                 <button
-                  onClick={() => { console.log("[DEBUG] hamburger click, z was", z); te(!z); }}
+                  onClick={() => te((isOpen) => !isOpen)}
                   className="text-gray-600 hover:text-pink-600 p-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 cursor-pointer"
                   aria-label="Toggle navigation menu"
+                  aria-expanded={z}
+                  aria-controls="sidebar-container"
                 >
                   {z ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
@@ -828,3 +830,5 @@ function App() {
   );
 }
 export default App;
+
+
